@@ -33,7 +33,7 @@ public class Ban extends Command {
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
                 }
             } else {
-                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Verwendung1: /ban <player> <reason>"));
+                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: /ban <player> <reason>"));
             }
         } else if(args.length >= 2){
             if(cs instanceof ProxiedPlayer){
