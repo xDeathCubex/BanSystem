@@ -22,12 +22,12 @@ public class Editban extends Command{
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
                 if(RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))){
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: §6/editmute <Spieler> <Grund>"));
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/editmute <Spieler> <Grund>"));
                 } else {
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
                 }
             } else {
-                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: §6/editmute <Spieler> <Grund>"));
+                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/editmute <Spieler> <Grund>"));
             }
         } else {
             if(cs instanceof ProxiedPlayer){
@@ -44,7 +44,8 @@ public class Editban extends Command{
                             MySQL.changeBanReason(uuid, reason);
                             for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers()){
                                 if(RankSystem.hasMod(UUIDFetcher.getUUID(all.getName()))){
-                                    all.sendMessage(new TextComponent(BanSystem.prefix + p.getDisplayName() + " §7hat den Bangrund von §a" + args[0] + " §7zu §e" + reason + " §7umgeändert!"));
+                                    all.sendMessage(new TextComponent(BanSystem.prefix + "§7Mutegrund bei §a" + args[0] + " §7wurde von " + p.getDisplayName() + " §7geändert:"));
+                                    all.sendMessage(new TextComponent(BanSystem.prefix + "§7" + reason));
                                 }
                             }
                         } else {
@@ -68,7 +69,8 @@ public class Editban extends Command{
                         MySQL.changeBanReason(uuid, reason);
                         for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers()){
                             if(RankSystem.hasMod(UUIDFetcher.getUUID(all.getName()))){
-                                all.sendMessage(new TextComponent(BanSystem.prefix +"§4BungeeConsole §7hat den Bangrund von §a" + args[0] + " §7zu §e" + reason + " §7umgeändert!"));
+                                all.sendMessage(new TextComponent(BanSystem.prefix + "§7Mutegrund bei §a" + args[0] + " §7wurde von " + p.getDisplayName() + " §7geändert:"));
+                                all.sendMessage(new TextComponent(BanSystem.prefix + "§7" + reason));
                             }
                         }
                     } else {
