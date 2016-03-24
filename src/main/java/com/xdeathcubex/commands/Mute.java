@@ -28,12 +28,12 @@ public class Mute extends Command {
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
                 if (RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))) {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: /mute <player> <reason>"));
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/mute <player> <reason>"));
                 } else {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "Keine Rechte!"));
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
                 }
             } else {
-                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: /mute <player> <reason>"));
+                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/mute <player> <reason>"));
             }
         } else if(args.length >= 2){
             if(cs instanceof ProxiedPlayer){
@@ -60,7 +60,7 @@ public class Mute extends Command {
                 if(cs instanceof ProxiedPlayer){
                     ProxiedPlayer p = (ProxiedPlayer)cs;
                     if(!RankSystem.hasAdmin(UUIDFetcher.getUUID(p.getName()))){
-                        p.sendMessage(new TextComponent(BanSystem.prefix + "Du darfst keine anderen Teammitglieder bannen / muten!"));
+                        p.sendMessage(new TextComponent(BanSystem.prefix + "§cDu darfst keine anderen Teammitglieder muten!"));
                         return;
                     }
                 }
@@ -70,21 +70,18 @@ public class Mute extends Command {
                 for (ProxiedPlayer all : ProxyServer.getInstance().getPlayers()) {
                     if(RankSystem.hasMod(UUIDFetcher.getUUID(all.getName()))) {
                         all.sendMessage(new TextComponent(BanSystem.prefix + "§a" + mutedUser + " §7wurde von §c" + mutedBy + " §7gemutet§c!"));
-                        all.sendMessage(new TextComponent(BanSystem.prefix + "§e" + reason + " §7| §a[permanent]"));
+                        all.sendMessage(new TextComponent(BanSystem.prefix + "§7" + reason + " §c| §7Dauer: §cpermanent"));
                     }
                 }
                 ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§a" + mutedUser + " §7wurde von §c" + mutedBy + " §7gemutet§c!"));
-                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + reason + " §7| §a[permanent]"));
+                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§7" + reason + " §c| §7Dauer: §cpermanent"));
                 ProxiedPlayer p1 = ProxyServer.getInstance().getPlayer(args[0]);
-                if (p1 != null){
-                    p1.sendMessage(new TextComponent(BanSystem.prefix + "Herzlichen Glückwunsch! Du wurdest soeben permanent gemutet!"));
-                }
             } else {
                 if(cs instanceof ProxiedPlayer){
                     ProxiedPlayer p = (ProxiedPlayer)cs;
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "Dieser Spieler ist bereits gemutet."));
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cDieser Spieler ist bereits gemutet."));
                 } else {
-                    ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Dieser Spieler ist beretis gemutet."));
+                    ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cDieser Spieler ist beretis gemutet."));
                 }
             }
         }
