@@ -1,0 +1,6 @@
+name: BanSystem
+version: 0.1
+author: xDeathCubex
+description: moin
+
+main: com.xdeathcubex.BanSystem

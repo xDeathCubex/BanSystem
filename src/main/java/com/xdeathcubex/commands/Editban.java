@@ -1,0 +1,83 @@
+package com.xdeathcubex.commands;
+
+import com.xdeathcubex.BanSystem;
+import com.xdeathcubex.mysql.MySQL;
+import com.xdeathcubex.utils.RankSystem;
+import com.xdeathcubex.utils.UUIDFetcher;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.plugin.Command;
+
+public class Editban extends Command{
+
+    public Editban() {
+        super("editban");
+    }
+
+    @Override
+    public void execute(CommandSender cs, String[] args) {
+        if(args.length < 2){
+            if(cs instanceof ProxiedPlayer){
+                ProxiedPlayer p = (ProxiedPlayer)cs;
+                if(RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))){
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: §6/editmute <Spieler> <Grund>"));
+                } else {
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
+                }
+            } else {
+                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: §6/editmute <Spieler> <Grund>"));
+            }
+        } else {
+            if(cs instanceof ProxiedPlayer){
+                ProxiedPlayer p = (ProxiedPlayer)cs;
+                if (RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))) {
+                    String uuid = UUIDFetcher.getUUID(args[0]);
+                    if(uuid != null){
+                        if(MySQL.isCurrentlyBanned(uuid)){
+                            StringBuilder sb = new StringBuilder();
+                            for(int i = 1; i < args.length; i++){
+                                sb.append(args[i]).append(" ");
+                            }
+                            String reason = sb.toString().trim();
+                            MySQL.changeBanReason(uuid, reason);
+                            for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers()){
+                                if(RankSystem.hasMod(UUIDFetcher.getUUID(all.getName()))){
+                                    all.sendMessage(new TextComponent(BanSystem.prefix + p.getDisplayName() + " §7hat den Bangrund von §a" + args[0] + " §7zu §e" + reason + " §7umgeändert!"));
+                                }
+                            }
+                        } else {
+                            p.sendMessage(new TextComponent(BanSystem.prefix + "§cDieser Spieler ist momentan nicht gebannt."));
+                        }
+                    } else {
+                        p.sendMessage(new TextComponent(BanSystem.prefix + "§cDieser Spieler existiert nicht."));
+                    }
+                } else {
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
+                }
+            } else {
+                String uuid = UUIDFetcher.getUUID(args[0]);
+                if(uuid != null){
+                    if(MySQL.isCurrentlyBanned(uuid)){
+                        StringBuilder sb = new StringBuilder();
+                        for(int i = 1; i < args.length; i++){
+                            sb.append(args[i]).append(" ");
+                        }
+                        String reason = sb.toString().trim();
+                        MySQL.changeBanReason(uuid, reason);
+                        for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers()){
+                            if(RankSystem.hasMod(UUIDFetcher.getUUID(all.getName()))){
+                                all.sendMessage(new TextComponent(BanSystem.prefix +"§4BungeeConsole §7hat den Bangrund von §a" + args[0] + " §7zu §e" + reason + " §7umgeändert!"));
+                            }
+                        }
+                    } else {
+                        ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cDieser Spieler ist momentan nicht gebannt."));
+                    }
+                } else {
+                    ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cDieser Spieler existiert nicht."));
+                }
+            }
+        }
+    }
+}
