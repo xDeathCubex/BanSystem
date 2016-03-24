@@ -28,12 +28,12 @@ public class Ban extends Command {
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
                 if(RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))){
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: /ban <player> <reason>"));
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/ban <player> <reason>"));
                 } else {
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
                 }
             } else {
-                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: /ban <player> <reason>"));
+                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/ban <player> <reason>"));
             }
         } else if(args.length >= 2){
             if(cs instanceof ProxiedPlayer){
@@ -72,18 +72,18 @@ public class Ban extends Command {
                 for (ProxiedPlayer all : ProxyServer.getInstance().getPlayers()) {
                     if(RankSystem.hasMod(UUIDFetcher.getUUID(all.getName()))) {
                         all.sendMessage(new TextComponent(BanSystem.prefix + "§a" + bannedUser + " §7wurde von §c" + bannedBy + " §7gebannt§c!"));
-                        all.sendMessage(new TextComponent(BanSystem.prefix + "§e" + reason + " §7| §a[permanent]"));
+                        all.sendMessage(new TextComponent(BanSystem.prefix + "§7" + reason + " §c| §7Dauer: §cpermanent"));
                     }
                 }
                 ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§a" + bannedUser + " §7wurde von §c" + bannedBy + " §7gebannt§c!"));
-                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + reason + " §7| §a[permanent]"));
+                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + reason + " §c| §7Dauer: §cpermanent"));
                 ProxiedPlayer p1 = ProxyServer.getInstance().getPlayer(args[0]);
                 if (p1 != null && TimeUnit.checkBan(uuid)){
                     p1.disconnect(new TextComponent(
                             "§cDu wurdest vom LogMC Netzwerk gebannt." +
                             "\n" +
-                            "\n§7Grund§8: §e" + MySQL.getCurrentBan("Reason", uuid) +
-                            "\n§7Verbleibende Zeit: §e" + TimeUnit.getTime()));
+                            "\n§7Grund§8: §c" + MySQL.getCurrentBan("Reason", uuid) +
+                            "\n§7Verbleibende Zeit: §c" + TimeUnit.getTime()));
                 }
             } else {
                 if(cs instanceof ProxiedPlayer){
