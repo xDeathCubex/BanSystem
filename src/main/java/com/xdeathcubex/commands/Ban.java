@@ -62,7 +62,7 @@ public class Ban extends Command {
                 if(cs instanceof ProxiedPlayer){
                     ProxiedPlayer p = (ProxiedPlayer)cs;
                     if(!RankSystem.hasAdmin(UUIDFetcher.getUUID(p.getName()))){
-                        p.sendMessage(new TextComponent(BanSystem.prefix + "Du darfst keine anderen Teammitglieder bannen / muten!"));
+                        p.sendMessage(new TextComponent(BanSystem.prefix + "Du darfst keine anderen Teammitglieder bannen"));
                         return;
                     }
                 }
