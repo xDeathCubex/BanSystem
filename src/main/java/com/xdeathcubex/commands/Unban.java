@@ -22,12 +22,12 @@ public class Unban extends Command {
             if (cs instanceof ProxiedPlayer) {
                 ProxiedPlayer p = (ProxiedPlayer) cs;
                 if (RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))) {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: §6/unban <user>"));
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/unban <user>"));
                 } else {
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
                 }
             } else {
-                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: §6/unban <user>"));
+                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/unban <user>"));
             }
         } else {
             String uuid = UUIDFetcher.getUUID(args[0]);
@@ -35,24 +35,24 @@ public class Unban extends Command {
                 if (cs instanceof ProxiedPlayer) {
                     ProxiedPlayer p = (ProxiedPlayer) cs;
                     if (RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))) {
-                        p.sendMessage(new TextComponent(BanSystem.prefix + "Der Spieler §a" + args[0] + " §7existiert nicht."));
+                        p.sendMessage(new TextComponent(BanSystem.prefix + "§7Der Spieler §a" + args[0] + " §7existiert nicht."));
                     } else {
                         p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
                     }
                 } else {
-                    ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Der Spieler §a" + args[0] + " §7existiert nicht."));
+                    ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§7Der Spieler §a" + args[0] + " §7existiert nicht."));
                 }
             } else {
                 if (!MySQL.isCurrentlyBanned(uuid)) {
                     if (cs instanceof ProxiedPlayer) {
                         ProxiedPlayer p = (ProxiedPlayer) cs;
                         if (RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))) {
-                            p.sendMessage(new TextComponent(BanSystem.prefix + args[0] + " ist nicht gebannt."));
+                            p.sendMessage(new TextComponent(BanSystem.prefix + "§a" + args[0] + " §7ist nicht gebannt."));
                         } else {
                             p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
                         }
                     } else {
-                        ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + args[0] + " ist nicht gebannt."));
+                        ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§a" + args[0] + " §7ist nicht gebannt."));
                     }
                 } else {
                     String name = "§4BungeeConsole";
