@@ -21,8 +21,8 @@ public class PreLogin implements Listener {
             e.getConnection().disconnect(new TextComponent(
                                     "§cDu wurdest vom LogMC Netzwerk gebannt." +
                                     "\n" +
-                                    "\n§7Grund§8: §e" + MySQL.getCurrentBan("Reason", e.getConnection().getUniqueId().toString().replaceAll("-", "")) +
-                                    "\n§7Verbleibende Zeit: §e" + TimeUnit.getTime()));
+                                    "\n§eBangrund§8: §c" + MySQL.getCurrentBan("Reason", e.getConnection().getUniqueId().toString().replaceAll("-", "")) +
+                                    "\n§aVerbleibende Zeit§8: §e" + TimeUnit.getTime()));
         }
     }
 }
