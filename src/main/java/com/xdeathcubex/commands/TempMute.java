@@ -32,12 +32,12 @@ public class TempMute extends Command{
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
                 if (RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))) {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: /tempmute <player> <time> <reason>"));
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/tempmute <player> <time> <reason>"));
                 } else {
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
                 }
             } else {
-                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: /tempmute <player> <time> <reason>"));
+                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/tempmute <player> <time> <reason>"));
             }
         } else if(args.length >= 3){
             if(cs instanceof ProxiedPlayer){
@@ -58,9 +58,9 @@ public class TempMute extends Command{
                     (!timeVariable.equalsIgnoreCase("y"))) {
                 if ((cs instanceof ProxiedPlayer)) {
                     ProxiedPlayer p = (ProxiedPlayer) cs;
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "Invalide Zeitangabe! Möglichkeiten§7: §a s, m, h, d, y"));
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cInvalide Zeitangabe! Möglichkeiten§8: §a s, m, h, d, y"));
                 } else {
-                    ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Invalide Zeitangabe! Möglichkeiten§7: §a s, m, h, d, y"));
+                    ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cInvalide Zeitangabe! Möglichkeiten§8: §a s, m, h, d, y"));
                 }
             } else {
                 muteTime = args[1].toLowerCase();
@@ -79,7 +79,7 @@ public class TempMute extends Command{
                     if(cs instanceof ProxiedPlayer){
                         ProxiedPlayer p = (ProxiedPlayer)cs;
                         if(!RankSystem.hasAdmin(UUIDFetcher.getUUID(p.getName()))){
-                            p.sendMessage(new TextComponent(BanSystem.prefix + "Du darfst keine anderen Teammitglieder bannen / muten!"));
+                            p.sendMessage(new TextComponent(BanSystem.prefix + "§cDu darfst keine anderen Teammitglieder muten!"));
                             return;
                         }
                     }
@@ -89,21 +89,18 @@ public class TempMute extends Command{
                     for (ProxiedPlayer all : ProxyServer.getInstance().getPlayers()) {
                         if(RankSystem.hasMod(UUIDFetcher.getUUID(all.getName()))) {
                             all.sendMessage(new TextComponent(BanSystem.prefix + "§a" + mutedUser + " §7wurde von §c" + mutedBy + " §7gemutet§c!"));
-                            all.sendMessage(new TextComponent(BanSystem.prefix + "§e" + reason + " §7| §a[" + muteTime + "]"));
+                            all.sendMessage(new TextComponent(BanSystem.prefix + "§7" + reason + " §a[" + muteTime + "]"));
                         }
                     }
                     ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§a" + mutedUser + " §7wurde von §c" + mutedBy + " §7gemutet§c!"));
-                    ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + reason + " §7| §a["+muteTime+"]"));
+                    ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§7" + reason + " §a["+muteTime+"]"));
                     ProxiedPlayer p1 = ProxyServer.getInstance().getPlayer(args[0]);
-                    if (p1 != null && TimeUnit.checkMute(uuid)){
-                        p1.sendMessage(new TextComponent(BanSystem.prefix + "Herzlichen Glückwunsch. Du wurdest soeben für §a" + TimeUnit.getTime() +" §7gemutet!"));
-                    }
                 } else {
                     if(cs instanceof ProxiedPlayer){
                         ProxiedPlayer p = (ProxiedPlayer)cs;
-                        p.sendMessage(new TextComponent(BanSystem.prefix + "Dieser Spieler ist bereits gemutet."));
+                        p.sendMessage(new TextComponent(BanSystem.prefix + "§cDieser Spieler ist bereits gemutet."));
                     } else {
-                        ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix +"Dieser Spieler ist beretis gemutet."));
+                        ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix +"§cDieser Spieler ist beretis gemutet."));
                     }
                 }
             }
