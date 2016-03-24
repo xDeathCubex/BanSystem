@@ -69,7 +69,7 @@ public class Editban extends Command{
                         MySQL.changeBanReason(uuid, reason);
                         for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers()){
                             if(RankSystem.hasMod(UUIDFetcher.getUUID(all.getName()))){
-                                all.sendMessage(new TextComponent(BanSystem.prefix + "§7Mutegrund bei §a" + args[0] + " §7wurde von " + p.getDisplayName() + " §7geändert:"));
+                                all.sendMessage(new TextComponent(BanSystem.prefix + "§7Mutegrund bei §a" + args[0] + " §7wurde von §4BungeeConsole §7geändert:"));
                                 all.sendMessage(new TextComponent(BanSystem.prefix + "§7" + reason));
                             }
                         }
