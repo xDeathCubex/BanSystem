@@ -27,13 +27,13 @@ public class Whereis extends Command {
         } else {
             String uuid = UUIDFetcher.getUUID(args[0]);
             if(uuid == null){
-                p.sendMessage(new TextComponent("§cDieser Spieler existiert nicht."));
+                p.sendMessage(new TextComponent(BanSystem.prefix + "§cDieser Spieler existiert nicht."));
             } else {
                 ProxiedPlayer p1 = ProxyServer.getInstance().getPlayer(args[0]);
                 if(p1 == null){
-                    p.sendMessage(new TextComponent(RankSystem.getPrefix(uuid) +" ist momentan nicht online."));
+                    p.sendMessage(new TextComponent(BanSystem.prefix + RankSystem.getPrefix(uuid) +" §cist momentan nicht online."));
                 } else {
-                    p.sendMessage(new TextComponent(RankSystem.getPrefix(uuid) + " §7befindet sich auf dem §6" + p1.getServer().getInfo().getName() + " §7Server."));
+                    p.sendMessage(new TextComponent(BanSystem.prefix + RankSystem.getPrefix(uuid) + " §7befindet sich auf Server §e" + p1.getServer().getInfo().getName()));
                 }
             }
         }
