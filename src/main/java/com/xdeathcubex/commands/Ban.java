@@ -24,24 +24,21 @@ public class Ban extends Command {
 
     @Override
     public void execute(CommandSender cs, String[] args) {
+        if(cs instanceof ProxiedPlayer){
+            ProxiedPlayer p = (ProxiedPlayer)cs;
+            if(!RankSystem.hasSrMod(p.getUniqueId().toString().replaceAll("-",""))){
+                p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
+                return;
+            }
+        }
         if(args.length == 0){
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if(RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/ban <player> <reason>"));
-                } else {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
-                }
             } else {
                 ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/ban <player> <reason>"));
             }
         } else if(args.length >= 2){
-            if(cs instanceof ProxiedPlayer){
-                ProxiedPlayer p = (ProxiedPlayer)cs;
-                if(!RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
-                    return;
-                }
-            }
             StringBuilder sb = new StringBuilder();
             for(int i = 1; i < args.length; i++){
                 sb.append(args[i]).append(" ");
@@ -56,11 +53,18 @@ public class Ban extends Command {
                 bannedBy = "§4BungeeConsole";
             }
             String uuid = UUIDFetcher.getUUID(bannedUser);
-            if(RankSystem.hasMod(uuid)){
+            if(uuid == null){
+                if(cs instanceof ProxiedPlayer){
+                    ProxiedPlayer p = (ProxiedPlayer)cs;
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cDieser Spieler existiert nicht."));
+                    return;
+                }
+            }
+            if(RankSystem.hasSrMod(uuid)){
                 if(cs instanceof ProxiedPlayer){
                     ProxiedPlayer p = (ProxiedPlayer)cs;
                     if(!RankSystem.hasAdmin(p.getUniqueId().toString().replaceAll("-",""))){
-                        p.sendMessage(new TextComponent(BanSystem.prefix + "Du darfst keine anderen Teammitglieder bannen"));
+                        p.sendMessage(new TextComponent(BanSystem.prefix + "Du darfst keine anderen Teammitglieder bannen."));
                         return;
                     }
                 }

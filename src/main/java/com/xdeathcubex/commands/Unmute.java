@@ -18,27 +18,26 @@ public class Unmute extends Command {
 
     @Override
     public void execute(CommandSender cs, String[] args) {
+        if(cs instanceof ProxiedPlayer){
+            ProxiedPlayer p = (ProxiedPlayer)cs;
+            if(!RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
+                p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
+                return;
+            }
+        }
         if (args.length == 0) {
             if (cs instanceof ProxiedPlayer) {
                 ProxiedPlayer p = (ProxiedPlayer) cs;
-                if(RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/unmute <user>"));
-                } else {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
-                }
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/unmute <Spieler> <Grund>"));
             } else {
-                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/unmute <user>"));
+                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/unmute <Spieler> <Grund>"));
             }
         } else {
             String uuid = UUIDFetcher.getUUID(args[0]);
             if (uuid == null) {
                 if (cs instanceof ProxiedPlayer) {
                     ProxiedPlayer p = (ProxiedPlayer) cs;
-                    if(RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                         p.sendMessage(new TextComponent(BanSystem.prefix + "§7Dieser Spieler existiert nicht."));
-                    } else {
-                        p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
-                    }
                 } else {
                     ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§7Dieser Spieler existiert nicht."));
                 }
@@ -46,29 +45,35 @@ public class Unmute extends Command {
                 if (!MySQL.isCurrentlyMuted(uuid)) {
                     if (cs instanceof ProxiedPlayer) {
                         ProxiedPlayer p = (ProxiedPlayer) cs;
-                        if(RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                             p.sendMessage(new TextComponent(BanSystem.prefix + "§a" + args[0] + " §7ist nicht gemutet."));
-                        } else {
-                            p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
-                        }
                     } else {
                         ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§a"  + RankSystem.getPrefix(uuid) + " §7ist nicht gemutet."));
                     }
                 } else {
+                    if(MySQL.getCurrentMute("endTime", uuid).equals("permanent")){
+                        if(cs instanceof ProxiedPlayer){
+                            ProxiedPlayer p = (ProxiedPlayer)cs;
+                            if(!RankSystem.hasSrMod(p.getUniqueId().toString().replaceAll("-",""))){
+                                p.sendMessage(new TextComponent(BanSystem.prefix + "§cDu darfst keine permanent gemutete Spieler entmute!"));
+                                return;
+                            }
+                        }
+                    }
+                    StringBuilder sb = new StringBuilder();
+                    for(int i = 1; i < args.length; i++){
+                        sb.append(args[i]).append(" ");
+                    }
+                    String reason = sb.toString().trim();
                     String name = "§4BungeeConsole";
                     if(cs instanceof ProxiedPlayer){
                         ProxiedPlayer p = (ProxiedPlayer) cs;
-                        if(RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                             name = p.getDisplayName();
-                        } else {
-                            p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
-                            return;
-                        }
                     }
                     MySQL.unmuteUser(uuid);
                     for (ProxiedPlayer all : ProxyServer.getInstance().getPlayers()) {
                         if(RankSystem.hasMod(all.getUniqueId().toString().replaceAll("-",""))){
                             all.sendMessage(new TextComponent(BanSystem.prefix + "§a" + RankSystem.getPrefix(uuid) + " §7wurde von §c" + name + " §7entmutet§c!"));
+                            all.sendMessage(new TextComponent(BanSystem.prefix + reason));
                         }
                     }
                 }

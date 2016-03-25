@@ -11,11 +11,15 @@ public class RankSystem {
 
     public static boolean hasAdmin(String uuid){
         String rank = MySQL.getRank(uuid);
-        return rank.equals("admin") || rank.equals("dev");
+        return rank != null && rank.equals("admin");
+    }
+    public static boolean hasSrMod(String uuid){
+        String rank = MySQL.getRank(uuid);
+        return rank != null && (rank.equals("admin") || rank.equals("srmod"));
     }
     public static boolean hasMod(String uuid) {
         String rank = MySQL.getRank(uuid);
-        return rank != null && (rank.equals("srmod") || rank.equals("mod") || rank.equals("admin") || rank.equals("dev"));
+        return rank != null && (rank.equals("srmod") || rank.equals("mod") || rank.equals("admin"));
     }
     public static String getPrefix(String uuid){
 

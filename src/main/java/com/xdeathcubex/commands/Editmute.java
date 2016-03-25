@@ -12,27 +12,29 @@ import net.md_5.bungee.api.plugin.Command;
 
 public class Editmute extends Command{
 
-    public Editmute() {
-        super("editmute");
+    public Editmute(String cmd) {
+        super(cmd);
     }
 
     @Override
     public void execute(CommandSender cs, String[] args) {
+        if(cs instanceof ProxiedPlayer){
+            ProxiedPlayer p = (ProxiedPlayer)cs;
+            if(!RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
+                p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
+                return;
+            }
+        }
         if(args .length < 2){
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if(RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/editban <Spieler> <Grund>"));
-                } else {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
-                }
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/editmute <Spieler> <Grund>"));
             } else {
-                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/editban <Spieler> <Grund>"));
+                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/editmute <Spieler> <Grund>"));
             }
         } else {
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if (RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                     String uuid = UUIDFetcher.getUUID(args[0]);
                     if(uuid != null){
                         if(MySQL.isCurrentlyMuted(uuid)){
@@ -54,9 +56,6 @@ public class Editmute extends Command{
                     } else {
                         p.sendMessage(new TextComponent(BanSystem.prefix + "§cDieser Spieler existiert nicht."));
                     }
-                } else {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
-                }
             } else {
                 String uuid = UUIDFetcher.getUUID(args[0]);
                 if(uuid != null){

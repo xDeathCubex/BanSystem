@@ -3,6 +3,7 @@ package com.xdeathcubex.commands;
 import com.xdeathcubex.BanSystem;
 import com.xdeathcubex.mysql.MySQL;
 import com.xdeathcubex.utils.RankSystem;
+import com.xdeathcubex.utils.TimeUnit;
 import com.xdeathcubex.utils.UUIDFetcher;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -15,20 +16,23 @@ import java.util.Date;
 
 public class Baninfo extends Command {
 
-    public Baninfo() {
-        super("baninfo");
+    public Baninfo(String cmd) {
+        super(cmd);
     }
 
     @Override
     public void execute(CommandSender cs, String[] args) {
+        if(cs instanceof ProxiedPlayer){
+            ProxiedPlayer p = (ProxiedPlayer)cs;
+            if(!RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
+                p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
+                return;
+            }
+        }
         if(args.length != 1){
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if(RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/baninfo <Name>"));
-                } else {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
-                }
             } else {
                 ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/baninfo <Name>"));
             }
@@ -36,7 +40,6 @@ public class Baninfo extends Command {
             String uuid = UUIDFetcher.getUUID(args[0]);
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if(RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                     if(uuid == null){
                         p.sendMessage(new TextComponent(BanSystem.prefix + "§cDieser Spieler existiert nicht."));
                     } else {
@@ -53,6 +56,7 @@ public class Baninfo extends Command {
                                 p.sendMessage(new TextComponent("§7[§cBAN§7] §7Grund§8: §c" + MySQL.getCurrentBan("Reason", uuid)));
                                 p.sendMessage(new TextComponent("§7[§cBAN§7] §7Gebannt am§8: §c" + format1.format(new Date(Long.parseLong(MySQL.getCurrentBan("startTime", uuid))))));
                                 p.sendMessage(new TextComponent("§7[§cBAN§7] §7Dauer§8: §c" + MySQL.getCurrentBan("endTime", uuid)));
+                                p.sendMessage(new TextComponent("§7[§cBAN§7] §7Verbleibende Zeit: §c" + TimeUnit.getTime()));
                             }
                             if(MySQL.isCurrentlyMuted(uuid)){
                                 SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
@@ -61,12 +65,11 @@ public class Baninfo extends Command {
                                 p.sendMessage(new TextComponent("§7[§cMUTE§7] §7Grund§8: §c" + MySQL.getCurrentMute("Reason", uuid)));
                                 p.sendMessage(new TextComponent("§7[§cMUTE§7] §7Gebannt am§8: §c" + format1.format(new Date(Long.parseLong(MySQL.getCurrentMute("startTime", uuid))))));
                                 p.sendMessage(new TextComponent("§7[§cMUTE§7] §7Dauer§8: §c" + MySQL.getCurrentMute("endTime", uuid)));
+                                p.sendMessage(new TextComponent("§7[§cMUTE§7] §7Verbleibende Zeit: §c" + TimeUnit.getTime()));
+
                             }
                         }
                     }
-                } else {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
-                }
             } else {
                 if(uuid == null){
                     ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cDieser Spieler existiert nicht."));

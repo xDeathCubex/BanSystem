@@ -14,8 +14,8 @@ import net.md_5.bungee.api.plugin.Command;
 
 public class TempBan extends Command{
 
-    public TempBan() {
-        super("tempban");
+    public TempBan(String cmd) {
+        super(cmd);
     }
 
     String bannedUser;
@@ -26,24 +26,21 @@ public class TempBan extends Command{
 
     @Override
     public void execute(CommandSender cs, String[] args) {
+        if(cs instanceof ProxiedPlayer){
+            ProxiedPlayer p = (ProxiedPlayer)cs;
+            if(!RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
+                p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
+                return;
+            }
+        }
         if(args.length == 0){
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if (RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/tempban <player> <time> <reason>"));
-                } else {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
-                }
             } else {
                 ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/tempban <player> <time> <reason>"));
             }
         } else if(args.length >= 3){
-            if(cs instanceof ProxiedPlayer){
-                ProxiedPlayer p = (ProxiedPlayer)cs;
-                if(!RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
-                    return;
-                }
-            }
             StringBuilder sb = new StringBuilder();
             for(int i = 2; i < args.length; i++){
                 sb.append(args[i]).append(" ");

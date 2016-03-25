@@ -22,10 +22,17 @@ public class Banlog extends Command{
 
     @Override
     public void execute(CommandSender cs, String[] args) {
+        if(cs instanceof ProxiedPlayer){
+            ProxiedPlayer p = (ProxiedPlayer)cs;
+            if(!RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
+                p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
+                return;
+            }
+        }
         if(args.length == 0){
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/banlog <user>"));
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/banlog <user>"));
             } else {
                 ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/banlog <Name>"));
             }
@@ -52,7 +59,7 @@ public class Banlog extends Command{
                     ArrayList<String> endTime = MySQL.getPastBans("endTime", uuid);
 
                     for(int i = 0; i < bannedBy.size(); i++){
-                            p.sendMessage(new TextComponent("§7Typ: §cban §7Erstellt§8: §c" + format1.format(new Date(Long.parseLong(startTime.get(i)))) + " §7Grund: §c" + reason.get(i) + " §7Von: §a" + RankSystem.getPrefix(bannedBy.get(i)) + " §7Zeit: " + endTime.get(i)));
+                            p.sendMessage(new TextComponent("§7Typ: §cban §7Erstellt§8: §c" + format1.format(new Date(Long.parseLong(startTime.get(i)))) + " §7Grund: §c" + reason.get(i) + " §7Von: §a" + RankSystem.getPrefix(bannedBy.get(i)) + " §7Zeit: §c" + endTime.get(i)));
                     }
 
                     /** MUTES **/
@@ -62,7 +69,7 @@ public class Banlog extends Command{
                     ArrayList<String> endTime1 = MySQL.getPastMutes("endTime", uuid);
 
                     for(int i = 0; i < bannedBy1.size(); i++){
-                        p.sendMessage(new TextComponent("§7Typ: §cmute §7Erstellt§8: §c" + format1.format(new Date(Long.parseLong(startTime1.get(i)))) + " §7Grund: §c" + reason1.get(i) + " §7Von: §a" + RankSystem.getPrefix(bannedBy1.get(i)) + " §7Zeit: " + endTime1.get(i)));
+                        p.sendMessage(new TextComponent("§7Typ: §cmute §7Erstellt§8: §c" + format1.format(new Date(Long.parseLong(startTime1.get(i)))) + " §7Grund: §c" + reason1.get(i) + " §7Von: §a" + RankSystem.getPrefix(bannedBy1.get(i)) + " §7Zeit: §c" + endTime1.get(i)));
                     }
 
                 } else {

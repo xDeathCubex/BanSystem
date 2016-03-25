@@ -24,24 +24,21 @@ public class Mute extends Command {
 
     @Override
     public void execute(CommandSender cs, String[] args) {
+        if(cs instanceof ProxiedPlayer){
+            ProxiedPlayer p = (ProxiedPlayer)cs;
+            if(!RankSystem.hasSrMod(p.getUniqueId().toString().replaceAll("-",""))){
+                p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
+                return;
+            }
+        }
         if(args.length == 0){
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if (RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/mute <player> <reason>"));
-                } else {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
-                }
             } else {
                 ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/mute <player> <reason>"));
             }
         } else if(args.length >= 2){
-            if(cs instanceof ProxiedPlayer){
-                ProxiedPlayer p = (ProxiedPlayer)cs;
-                if(!RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
-                    return;
-                }
-            }
             StringBuilder sb = new StringBuilder();
             for(int i = 1; i < args.length; i++){
                 sb.append(args[i]).append(" ");
@@ -56,7 +53,7 @@ public class Mute extends Command {
                 mutedBy = "§4BungeeConsole";
             }
             String uuid = UUIDFetcher.getUUID(mutedUser);
-            if(RankSystem.hasMod(uuid)){
+            if(RankSystem.hasSrMod(uuid)){
                 if(cs instanceof ProxiedPlayer){
                     ProxiedPlayer p = (ProxiedPlayer)cs;
                     if(!RankSystem.hasAdmin(p.getUniqueId().toString().replaceAll("-",""))){

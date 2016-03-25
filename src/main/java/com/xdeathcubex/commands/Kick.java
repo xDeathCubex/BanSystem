@@ -17,14 +17,17 @@ public class Kick extends Command {
 
     @Override
     public void execute(CommandSender cs, String[] args) {
+        if(cs instanceof ProxiedPlayer){
+            ProxiedPlayer p = (ProxiedPlayer)cs;
+            if(!RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
+                p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
+                return;
+            }
+        }
         if(args.length < 2){
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if (RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-", ""))) {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: §6/kick <Spieler>"));
-                } else {
-                    p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
-                }
+                    p.sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: §6/kick <Spieler> <Grund>"));
             } else {
                 ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Verwendung: §6/kick <Spieler>"));
             }
@@ -32,11 +35,7 @@ public class Kick extends Command {
             String kickedBy;
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if(!RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
-                    return;
-                } else {
                     kickedBy = p.getDisplayName();
-                }
             } else {
                 kickedBy = "§4BungeeConsole";
             }
@@ -46,7 +45,7 @@ public class Kick extends Command {
                     ProxiedPlayer p = (ProxiedPlayer)cs;
                     p.sendMessage(new TextComponent(BanSystem.prefix + "Dieser Spieler ist momentan nicht online."));
                 } else {
-                    ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Dieser SPieler ist momentan nicht online."));
+                    ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "Dieser Spieler ist momentan nicht online."));
                 }
             } else {
                 StringBuilder sb = new StringBuilder();
@@ -56,6 +55,12 @@ public class Kick extends Command {
                 String reason = sb.toString().trim();
                 ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§a" + RankSystem.getPrefix(p1.getUniqueId().toString().replaceAll("-","")) + " §7wurde von §c" + kickedBy + " §7gekickt§c!"));
                 ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + reason));
+                for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers()){
+                    if (RankSystem.hasMod(all.getUniqueId().toString().replaceAll("-", ""))) {
+                        all.sendMessage(new TextComponent(BanSystem.prefix + "§a" + RankSystem.getPrefix(p1.getUniqueId().toString().replaceAll("-","")) + " §7wurde von §c" + kickedBy + " §7gekickt§c!"));
+                        all.sendMessage(new TextComponent(BanSystem.prefix + reason));
+                    }
+                }
                     p1.disconnect(new TextComponent("§cDu wurdest vom LogMC Netzwerk gekickt.\n\n§7Grund§8: §c" + reason));
             }
         }
