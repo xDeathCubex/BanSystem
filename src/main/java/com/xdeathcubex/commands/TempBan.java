@@ -71,7 +71,7 @@ public class TempBan extends Command{
                     if(cs instanceof ProxiedPlayer){
                         ProxiedPlayer p = (ProxiedPlayer)cs;
                         if(!RankSystem.hasAdmin(p.getUniqueId().toString().replaceAll("-",""))){
-                            p.sendMessage(new TextComponent(BanSystem.prefix + "Du darfst keine anderen Teammitglieder bannen!"));
+                            p.sendMessage(new TextComponent(BanSystem.prefix + "§cDu darfst keine Teammitglieder bannen"));
                             return;
                         }
                     }
