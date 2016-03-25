@@ -19,7 +19,7 @@ public class Mg extends Command {
             return;
         }
         if(args.length < 1){
-            p.sendMessage(new TextComponent("§cVerwendung: §6/mg <Nachricht>"));
+            p.sendMessage(new TextComponent("§cVerwendung: §e/mg <Nachricht>"));
         } else {
             StringBuilder sb = new StringBuilder();
             for (String arg : args) {
