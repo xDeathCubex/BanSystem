@@ -31,7 +31,7 @@ public class TempMute extends Command{
         if(args.length == 0){
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if (RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))) {
+                if (RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/tempmute <player> <time> <reason>"));
                 } else {
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
@@ -42,7 +42,7 @@ public class TempMute extends Command{
         } else if(args.length >= 3){
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if(!RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))){
+                if(!RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                     return;
                 }
             }
@@ -68,9 +68,7 @@ public class TempMute extends Command{
                 date = System.currentTimeMillis();
                 if(cs instanceof ProxiedPlayer){
                     ProxiedPlayer p = (ProxiedPlayer)cs;
-                    if(RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))) {
-                        mutedBy = p.getName();
-                    }
+                        mutedBy = p.getUniqueId().toString().replaceAll("-","");
                 } else {
                     mutedBy = "§4BungeeConsole";
                 }
@@ -78,7 +76,7 @@ public class TempMute extends Command{
                 if(RankSystem.hasMod(uuid)){
                     if(cs instanceof ProxiedPlayer){
                         ProxiedPlayer p = (ProxiedPlayer)cs;
-                        if(!RankSystem.hasAdmin(UUIDFetcher.getUUID(p.getName()))){
+                        if(!RankSystem.hasAdmin(p.getUniqueId().toString().replaceAll("-",""))){
                             p.sendMessage(new TextComponent(BanSystem.prefix + "§cDu darfst keine anderen Teammitglieder muten!"));
                             return;
                         }
@@ -87,12 +85,12 @@ public class TempMute extends Command{
                 if(!MySQL.isCurrentlyMuted(uuid)){
                     MySQL.tempmuteUser(uuid, mutedBy, reason, date, muteTime);
                     for (ProxiedPlayer all : ProxyServer.getInstance().getPlayers()) {
-                        if(RankSystem.hasMod(UUIDFetcher.getUUID(all.getName()))) {
-                            all.sendMessage(new TextComponent(BanSystem.prefix + "§a" + mutedUser + " §7wurde von §c" + mutedBy + " §7gemutet§c!"));
+                        if(RankSystem.hasMod(all.getUniqueId().toString().replaceAll("-",""))){
+                            all.sendMessage(new TextComponent(BanSystem.prefix + "§a" + RankSystem.getPrefix(uuid) + " §7wurde von §c" + RankSystem.getPrefix(mutedBy) + " §7gemutet§c!"));
                             all.sendMessage(new TextComponent(BanSystem.prefix + "§7" + reason + " §a[" + muteTime + "]"));
                         }
                     }
-                    ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§a" + mutedUser + " §7wurde von §c" + mutedBy + " §7gemutet§c!"));
+                    ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§a" + RankSystem.getPrefix(uuid) + " §7wurde von §c" + RankSystem.getPrefix(mutedBy) + " §7gemutet§c!"));
                     ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§7" + reason + " §a["+muteTime+"]"));
                     ProxiedPlayer p1 = ProxyServer.getInstance().getPlayer(args[0]);
                 } else {

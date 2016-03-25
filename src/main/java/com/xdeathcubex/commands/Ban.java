@@ -27,7 +27,7 @@ public class Ban extends Command {
         if(args.length == 0){
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if(RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))){
+                if(RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/ban <player> <reason>"));
                 } else {
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
@@ -38,7 +38,7 @@ public class Ban extends Command {
         } else if(args.length >= 2){
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if(!RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))){
+                if(!RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                     return;
                 }
             }
@@ -51,9 +51,7 @@ public class Ban extends Command {
             date = System.currentTimeMillis();
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if(RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))){
-                    bannedBy = p.getName();
-                }
+                    bannedBy = p.getUniqueId().toString().replaceAll("-","");
             } else {
                 bannedBy = "§4BungeeConsole";
             }
@@ -61,7 +59,7 @@ public class Ban extends Command {
             if(RankSystem.hasMod(uuid)){
                 if(cs instanceof ProxiedPlayer){
                     ProxiedPlayer p = (ProxiedPlayer)cs;
-                    if(!RankSystem.hasAdmin(UUIDFetcher.getUUID(p.getName()))){
+                    if(!RankSystem.hasAdmin(p.getUniqueId().toString().replaceAll("-",""))){
                         p.sendMessage(new TextComponent(BanSystem.prefix + "Du darfst keine anderen Teammitglieder bannen"));
                         return;
                     }
@@ -70,12 +68,12 @@ public class Ban extends Command {
             if(!MySQL.isCurrentlyBanned(uuid)){
                 MySQL.banUser(uuid, bannedBy, reason, date);
                 for (ProxiedPlayer all : ProxyServer.getInstance().getPlayers()) {
-                    if(RankSystem.hasMod(UUIDFetcher.getUUID(all.getName()))) {
-                        all.sendMessage(new TextComponent(BanSystem.prefix + "§a" + bannedUser + " §7wurde von §c" + bannedBy + " §7gebannt§c!"));
+                    if(RankSystem.hasMod(all.getUniqueId().toString().replaceAll("-",""))) {
+                        all.sendMessage(new TextComponent(BanSystem.prefix + "§a" + RankSystem.getPrefix(uuid) + " §7wurde von §c" + RankSystem.getPrefix(bannedBy) + " §7gebannt§c!"));
                         all.sendMessage(new TextComponent(BanSystem.prefix + "§7" + reason + " §c| §7Dauer: §cpermanent"));
                     }
                 }
-                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§a" + bannedUser + " §7wurde von §c" + bannedBy + " §7gebannt§c!"));
+                ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + "§a" + RankSystem.getPrefix(uuid) + " §7wurde von §c" + RankSystem.getPrefix(bannedBy) + " §7gebannt§c!"));
                 ProxyServer.getInstance().getConsole().sendMessage(new TextComponent(BanSystem.prefix + reason + " §c| §7Dauer: §cpermanent"));
                 ProxiedPlayer p1 = ProxyServer.getInstance().getPlayer(args[0]);
                 if (p1 != null && TimeUnit.checkBan(uuid)){

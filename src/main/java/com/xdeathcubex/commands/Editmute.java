@@ -21,7 +21,7 @@ public class Editmute extends Command{
         if(args .length < 2){
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if(RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))){
+                if(RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cVerwendung: §e/editban <Spieler> <Grund>"));
                 } else {
                     p.sendMessage(new TextComponent(BanSystem.prefix + "§cKeine Rechte!"));
@@ -32,7 +32,7 @@ public class Editmute extends Command{
         } else {
             if(cs instanceof ProxiedPlayer){
                 ProxiedPlayer p = (ProxiedPlayer)cs;
-                if (RankSystem.hasMod(UUIDFetcher.getUUID(p.getName()))) {
+                if (RankSystem.hasMod(p.getUniqueId().toString().replaceAll("-",""))){
                     String uuid = UUIDFetcher.getUUID(args[0]);
                     if(uuid != null){
                         if(MySQL.isCurrentlyMuted(uuid)){
@@ -43,8 +43,8 @@ public class Editmute extends Command{
                             String reason = sb.toString().trim();
                             MySQL.changeMuteReason(uuid, reason);
                             for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers()){
-                                if(RankSystem.hasMod(UUIDFetcher.getUUID(all.getName()))){
-                                    all.sendMessage(new TextComponent(BanSystem.prefix + "§7Mutegrund bei §a" + args[0] + " §7wurde von " + p.getDisplayName() + " §7geändert:"));
+                                if(RankSystem.hasMod(all.getUniqueId().toString().replaceAll("-",""))){
+                                    all.sendMessage(new TextComponent(BanSystem.prefix + "§7Mutegrund bei §a" + RankSystem.getPrefix(uuid) + " §7wurde von " + p.getDisplayName() + " §7geändert:"));
                                     all.sendMessage(new TextComponent(BanSystem.prefix + "§7" + reason));
                                 }
                             }
@@ -68,8 +68,8 @@ public class Editmute extends Command{
                         String reason = sb.toString().trim();
                         MySQL.changeMuteReason(uuid, reason);
                         for(ProxiedPlayer all : ProxyServer.getInstance().getPlayers()){
-                            if(RankSystem.hasMod(UUIDFetcher.getUUID(all.getName()))){
-                                all.sendMessage(new TextComponent(BanSystem.prefix + "§7Mutegrund bei §a" + args[0] + " §7wurde von §4BungeeConsole §7geändert:"));
+                            if(RankSystem.hasMod(all.getUniqueId().toString().replaceAll("-",""))){
+                                all.sendMessage(new TextComponent(BanSystem.prefix + "§7Mutegrund bei §a" + RankSystem.getPrefix(uuid) + " §7wurde von §4BungeeConsole §7geändert:"));
                                 all.sendMessage(new TextComponent(BanSystem.prefix + "§7" + reason));
                             }
                         }

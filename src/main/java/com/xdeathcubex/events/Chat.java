@@ -17,8 +17,8 @@ public class Chat implements Listener{
             if(TimeUnit.checkMute(p.getUniqueId().toString().replaceAll("-", ""))){
                 e.setCancelled(true);
                 p.sendMessage(new TextComponent("§cDu wurdest aus dem Chat gebannt§8!" +
-                        "\n§eMutegrund§8: §c" + MySQL.getCurrentMute("Reason", p.getUniqueId().toString().replaceAll("-","") +
-                        "\n§aVerbleibende Zeit§8: §e" + TimeUnit.getTime())));
+                        "\n§eMutegrund§8: §c" + MySQL.getCurrentMute("Reason", p.getUniqueId().toString().replaceAll("-","")) +
+                        "\n§aVerbleibende Zeit§8: §e" + TimeUnit.getTime()));
             }
         }
     }

@@ -2,6 +2,7 @@ package com.xdeathcubex.commands;
 
 import com.xdeathcubex.BanSystem;
 import com.xdeathcubex.mysql.MySQL;
+import com.xdeathcubex.utils.RankSystem;
 import com.xdeathcubex.utils.UUIDFetcher;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
@@ -41,7 +42,7 @@ public class Banlog extends Command{
                 if(cs instanceof ProxiedPlayer){
 
                     ProxiedPlayer p = (ProxiedPlayer)cs;
-                    p.sendMessage(new TextComponent("§eBanlog von §a" + args[0]));
+                    p.sendMessage(new TextComponent("§eBanlog von §a" + RankSystem.getPrefix(uuid)));
                     SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
                     /** BANS **/
@@ -51,7 +52,7 @@ public class Banlog extends Command{
                     ArrayList<String> endTime = MySQL.getPastBans("endTime", uuid);
 
                     for(int i = 0; i < bannedBy.size(); i++){
-                            p.sendMessage(new TextComponent("§7Typ: §cban §7Erstellt §a " + format1.format(new Date(Long.parseLong(startTime.get(i) + " §7Grund: §c" + reason.get(i) + " §7Von: §a" + bannedBy.get(i) + " §7Zeit: " + endTime.get(i))))));
+                            p.sendMessage(new TextComponent("§7Typ: §cban §7Erstellt§8: §c" + format1.format(new Date(Long.parseLong(startTime.get(i)))) + " §7Grund: §c" + reason.get(i) + " §7Von: §a" + RankSystem.getPrefix(bannedBy.get(i)) + " §7Zeit: " + endTime.get(i)));
                     }
 
                     /** MUTES **/
@@ -61,7 +62,7 @@ public class Banlog extends Command{
                     ArrayList<String> endTime1 = MySQL.getPastMutes("endTime", uuid);
 
                     for(int i = 0; i < bannedBy1.size(); i++){
-                        p.sendMessage(new TextComponent("§7Typ: §cmute §7Erstellt §a " + format1.format(new Date(Long.parseLong(startTime1.get(i) + " §7Grund: §c" + reason1.get(i) + " §7Von: §a" + bannedBy1.get(i) + " §7Zeit: " + endTime1.get(i))))));
+                        p.sendMessage(new TextComponent("§7Typ: §cmute §7Erstellt§8: §c" + format1.format(new Date(Long.parseLong(startTime1.get(i)))) + " §7Grund: §c" + reason1.get(i) + " §7Von: §a" + RankSystem.getPrefix(bannedBy1.get(i)) + " §7Zeit: " + endTime1.get(i)));
                     }
 
                 } else {
