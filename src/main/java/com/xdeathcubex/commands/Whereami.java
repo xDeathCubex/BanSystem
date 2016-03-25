@@ -13,6 +13,6 @@ public class Whereami extends Command{
     @Override
     public void execute(CommandSender cs, String[] args) {
         ProxiedPlayer p = (ProxiedPlayer)cs;
-        p.sendMessage(new TextComponent("§7Du befindest dich momentan auf dem §6" + p.getServer().getInfo().getName() + " §7Server."));
+        p.sendMessage(new TextComponent("§7Du befindest dich momentan auf Server §e" + p.getServer().getInfo().getName()));
     }
 }
