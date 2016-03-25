@@ -18,6 +18,11 @@ public class RankSystem {
         return rank != null && (rank.equals("srmod") || rank.equals("mod") || rank.equals("admin") || rank.equals("dev"));
     }
     public static String getPrefix(String uuid){
+
+        if(uuid.equals("§4BungeeConsole")){
+            return "§4BungeeConsole";
+        }
+
         String rank = MySQL.getRank(uuid);
         String name = UUIDFetcher.getName(uuid);
 

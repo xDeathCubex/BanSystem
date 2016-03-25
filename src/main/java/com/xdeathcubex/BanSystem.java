@@ -27,7 +27,7 @@ public class BanSystem extends Plugin {
         getProxy().getPluginManager().registerListener(this, new Chat());
         getProxy().getPluginManager().registerListener(this, new PreLogin());
 
-        new MySQL("localhost", "root", "PWgoesHERE", "LogMC");
+        new MySQL("localhost", "root", "pw", "LogMC");
 
     }
 }
