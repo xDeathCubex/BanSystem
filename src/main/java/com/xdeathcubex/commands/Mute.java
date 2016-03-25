@@ -57,7 +57,7 @@ public class Mute extends Command {
                 if(cs instanceof ProxiedPlayer){
                     ProxiedPlayer p = (ProxiedPlayer)cs;
                     if(!RankSystem.hasAdmin(p.getUniqueId().toString().replaceAll("-",""))){
-                        p.sendMessage(new TextComponent(BanSystem.prefix + "§cDu darfst keine anderen Teammitglieder muten!"));
+                        p.sendMessage(new TextComponent(BanSystem.prefix + "§cDu darfst keine Teammitglieder muten"));
                         return;
                     }
                 }
